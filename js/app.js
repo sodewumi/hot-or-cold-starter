@@ -1,10 +1,15 @@
 $(document).ready(function () {
-	var counter;
-    var rightNumber;
-  	var difference;
-  	var guess;
-  	var win;
 
+	//takes a guess tally
+	var counter;
+	//the number that is randomly generated
+    var rightNumber;
+    //the number the user guesses
+    var guess;
+    //rightNumber - guess
+  	var difference;
+  	//if the user won the game or not
+  	var win;
 
 
   	//Display information modal box
@@ -18,12 +23,24 @@ $(document).ready(function () {
       $(".overlay").fadeOut(1000);
     });
    
+   //changes the overhead text
+   	var text = function (insert) {
+    	$(feedback).text(insert);
+    };
+
+    //clear the form and focus on the input when the user begins to type
+	var clearAndFocused = function () {
+		$("#userGuess").focus();
+		$('#userGuess').val('');
+	}
+
     //starts a new game
-    function newGame() {
+    var newGame = function () {
     	//reset
     	win = false; 
         rightNumber = Math.floor((Math.random()*100)+1);
         counter = 0   
+        clearAndFocused();
 
         //text
         $('ul#guessList').empty();
@@ -35,7 +52,7 @@ $(document).ready(function () {
 
     //checks for users guess. Finds the difference b/w
     //user's guess and right number
-    function guesses() {
+    var guesses  = function () {
     	//gets guess value
 		guess = document.getElementById('userGuess').value;
 		guess = parseInt(guess);
@@ -51,8 +68,8 @@ $(document).ready(function () {
     };
 
     //lists out number of guess and which guess
-    function lists() {
-    	counter ++
+    var lists = function () {
+    	counter ++;
 
     	$('span#count').text(counter);
     	$('ul#guessList').append('<li>' +guess+ '</li>');
@@ -77,7 +94,7 @@ $(document).ready(function () {
 
     //gives the user feedback depending on the difference between the right number
     //and the one the guessed. 
-	function comments () {
+	var comments = function () {
 		if (difference === 0) {
 		  text('You win!');
 		  return win = true;
@@ -97,14 +114,7 @@ $(document).ready(function () {
 		}
 	};
 
-    var text = function (insert) {
-    	$(feedback).text(insert);
-    };
 
-    // function focusAndClear() {
-    // 	$('#userGuess').onfocus();
-    // 	$('#userGuess').value('');
-    // }
 
  
     newGame();
@@ -115,7 +125,9 @@ $(document).ready(function () {
     
     $('form').submit(function(e) {
       e.preventDefault();
+
       guesses();
+      clearAndFocused();
 
       if(!win) {
       	if(validation(guess)) {
